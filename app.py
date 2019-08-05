@@ -2,11 +2,13 @@ import falcon
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine, Column, Integer, String, Date, DateTime
 from config import Base, db, api
+from controllers.users import UserLogin
+from flask_jwt_extended import (
+    JWTManager, jwt_required, create_access_token,
+    get_jwt_identity
+)
 
 class Customer:
-	def __init__(self):
-		print "init === ",self
-
 	def on_get(self, req, resp, customer_id=-1):
 		try:
 			if not customer_id or customer_id == -1:
@@ -89,6 +91,7 @@ def start():
     api.add_route('/customer/update', Customer(), alias='update')
     api.add_route('/customer/add', Customer())
     api.add_route('/customer/delete', Customer())
+    api.add_route('/user/login', UserLogin())
     return api
 
 api = start()
