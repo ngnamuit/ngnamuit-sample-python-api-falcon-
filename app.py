@@ -1,5 +1,4 @@
 import falcon
-from inputValidation import validate_required
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine, Column, Integer, String, Date, DateTime
 from config import Base, db, api
@@ -85,7 +84,7 @@ class Customers(Base):
 	updated_at = Column(DateTime)
 
 def start():
-	Base.metadata.create_all(db)
+    Base.metadata.create_all(db)
     api.add_route('/customer/get/{customer_id}', Customer())
     api.add_route('/customer/update', Customer(), alias='update')
     api.add_route('/customer/add', Customer())

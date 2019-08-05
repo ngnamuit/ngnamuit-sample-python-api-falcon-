@@ -4,6 +4,7 @@ import falcon
 import ConfigParser as configparser
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy.ext.declarative import declarative_base
 import argparse
 
 config = configparser.ConfigParser()
@@ -31,4 +32,3 @@ class SQLAlchemySessionManager:
             resource.session.remove()
 
 api = falcon.API(middleware=[SQLAlchemySessionManager(session_factory)])
-
