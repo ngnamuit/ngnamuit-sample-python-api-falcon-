@@ -2,6 +2,8 @@
 #!/usr/bin/python
 import jwt
 import falcon
+import config
+import controllers.users as us
 
 class AuthMiddleware:
     def process_request(self, req, resp):
@@ -20,8 +22,8 @@ class AuthMiddleware:
                                               challenges,
                                               href='http://docs.example.com/auth')
             token_jwt = token.replace('Bearer ','').strip()
-            user_decoded = jwt.decode(token_jwt, JWT_SECRET_KEY, algorithms=['HS256'])
-            is_valid_user = check_user(user_decoded.get('user_name', ''), user_decoded.get('password', ''))
+            user_decoded = jwt.decode(token_jwt, config.JWT_SECRET_KEY, algorithms=['HS256'])
+            is_valid_user = us.check_user(user_decoded.get('user_name', ''), user_decoded.get('password', ''))
             if not is_valid_user:
                 description = ('The provided auth token is not valid. '
                                'Please request a new token and try again.')

@@ -18,7 +18,10 @@ JWT_SECRET_KEY = config.get('DEFAULT', 'JWT_SECRET_KEY') or ''
 SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://%s:%s@%s/%s'%(
     DatabaseUserName, DatabasePassword, DatabaseHost, DatabaseName)
 db = create_engine(SQLALCHEMY_DATABASE_URI)
+conn = db.connect()
+
 session_factory = sessionmaker(bind=db)
+session = scoped_session(session_factory)
 Base = declarative_base()
 
 class SQLAlchemySessionManager:

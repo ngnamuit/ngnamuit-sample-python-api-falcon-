@@ -3,7 +3,7 @@
 from werkzeug.security import safe_str_cmp
 from datetime import datetime
 from passlib.context import CryptContext
-from config import JWT_SECRET_KEY
+import config
 import falcon
 import jwt
 
@@ -35,6 +35,7 @@ def check_user(username, password):
         if user['user_name'] == username and check_encrypted_password(password, user['password']):
             result = user.copy()
             result['password'] = password
+
             return result
     return False
 
@@ -54,7 +55,7 @@ class UserLogin:
                 return resp
             user = check_user(username, password)
             if user:
-                resp.media = {'access_token': jwt.encode(user, JWT_SECRET_KEY, algorithm='HS256')}
+                resp.media = {'access_token': jwt.encode(user, config.JWT_SECRET_KEY, algorithm='HS256')}
                 return resp
             resp.status = falcon.HTTP_401
             resp.media = {"message": "Username or password incorrect"}
